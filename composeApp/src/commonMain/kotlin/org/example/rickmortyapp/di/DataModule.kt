@@ -7,6 +7,8 @@ import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.example.rickmortyapp.data.remote.ApiService
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -15,6 +17,8 @@ val dataModule = module {
             install(ContentNegotiation) {
                 json(json = Json { ignoreUnknownKeys = true }, contentType = ContentType.Any)
             }
+
+            // If we don´t change the config, all the request have been like this
             install(DefaultRequest) {
                 url{
                     protocol = URLProtocol.HTTPS
@@ -23,4 +27,5 @@ val dataModule = module {
             }
         }
     }
+    factoryOf(::ApiService)
 }
