@@ -61,6 +61,11 @@ kotlin {
 
             // Viewmodel
             implementation(libs.lifecycle.viewmodel.compose)
+
+            // Paging3
+            implementation(libs.paging.compose.common)
+            implementation(libs.paging.common)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

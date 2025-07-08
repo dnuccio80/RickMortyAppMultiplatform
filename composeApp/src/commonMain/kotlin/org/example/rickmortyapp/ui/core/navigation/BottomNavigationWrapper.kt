@@ -1,5 +1,6 @@
 package org.example.rickmortyapp.ui.core.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -9,13 +10,13 @@ import org.example.rickmortyapp.ui.home.tabs.characters.CharacterScreen
 import org.example.rickmortyapp.ui.home.tabs.episodes.EpisodesScreen
 
 @Composable
-fun BottomNavigationWrapper(navController: NavHostController) {
+fun BottomNavigationWrapper(navController: NavHostController, innerPadding: PaddingValues) {
     NavHost(navController, startDestination = Routes.Episodes.route) {
         composable(Routes.Episodes.route) {
-            EpisodesScreen()
+            EpisodesScreen(innerPadding)
         }
         composable(Routes.Characters.route) {
-            CharacterScreen()
+            CharacterScreen(innerPadding)
         }
     }
 }

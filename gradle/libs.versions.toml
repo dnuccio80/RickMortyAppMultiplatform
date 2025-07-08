@@ -15,6 +15,8 @@ junit = "4.13.2"
 koinCompose = "4.1.0"
 kotlin = "2.2.0"
 navigationCompose = "2.9.0-beta03"
+pagingComposeCommon = "3.3.0-alpha02-0.4.0"
+pagingCommon = "3.3.0-alpha02-0.4.0"
 runtimeAndroid = "1.8.3"
 foundationLayoutAndroid = "1.8.3"
 uiAndroid = "1.8.3"
@@ -57,6 +59,8 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 # Coil
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilComposeCore" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coilComposeCore" }
+paging-common = { module = "app.cash.paging:paging-common", version.ref = "pagingCommon" }
+paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "pagingComposeCommon" }
 
 
 [plugins]
