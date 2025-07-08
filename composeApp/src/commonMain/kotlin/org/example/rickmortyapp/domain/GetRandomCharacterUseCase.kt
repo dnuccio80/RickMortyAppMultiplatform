@@ -1,8 +1,10 @@
 package org.example.rickmortyapp.domain
 
+import org.example.rickmortyapp.domain.model.CharacterModel
+
 class GetRandomCharacterUseCase(private val repository: Repository) {
-    suspend operator fun invoke() {
+    suspend operator fun invoke(): CharacterModel {
         val randomId = (1..826).random()
-        repository.getSingleCharacter(randomId.toString())
+        return repository.getSingleCharacter(randomId)
     }
 }

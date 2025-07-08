@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import org.example.rickmortyapp.ui.core.Routes
-import org.example.rickmortyapp.ui.home.tabs.CharacterScreen
-import org.example.rickmortyapp.ui.home.tabs.EpisodesScreen
+import org.example.rickmortyapp.ui.home.tabs.characters.CharacterScreen
+import org.example.rickmortyapp.ui.home.tabs.episodes.EpisodesScreen
 
 @Composable
 fun BottomNavigationWrapper(navController: NavHostController) {
