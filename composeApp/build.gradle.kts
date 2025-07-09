@@ -66,6 +66,9 @@ kotlin {
             implementation(libs.paging.compose.common)
             implementation(libs.paging.common)
 
+            // Date
+            implementation(libs.kotlinx.datetime)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
