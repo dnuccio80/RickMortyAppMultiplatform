@@ -29,7 +29,7 @@ fun HomeScreen() {
 
     Scaffold(bottomBar = { BottomBar(navController, bottomNavList) }) { innerPadding ->
         Box {
-            BottomNavigationWrapper(navController, innerPadding)
+            BottomNavigationWrapper(navController)
         }
     }
 }
