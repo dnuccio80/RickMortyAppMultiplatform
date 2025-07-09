@@ -1,9 +1,9 @@
 package org.example.rickmortyapp.di
 
-import org.example.rickmortyapp.domain.GetRandomCharacterUseCase
+import org.example.rickmortyapp.domain.GetCharacterOfTheDayUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val domainModule = module {
-    factoryOf(::GetRandomCharacterUseCase)
+    factoryOf(::GetCharacterOfTheDayUseCase)
 }

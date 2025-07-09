@@ -34,6 +34,7 @@ uiTextAndroid = "1.8.3"
 roomCommon = "2.7.2"
 ksp = "2.1.21-2.0.1"
 androidx-sqliteBundled = "2.5.2"
+media3CommonKtx = "1.7.1"
 
 [libraries]
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinCompose" }
@@ -78,6 +79,7 @@ androidx-ui-text-android = { group = "androidx.compose.ui", name = "ui-text-andr
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomCommon" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCommon" }
 androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqliteBundled" }
+androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 
 
 [plugins]

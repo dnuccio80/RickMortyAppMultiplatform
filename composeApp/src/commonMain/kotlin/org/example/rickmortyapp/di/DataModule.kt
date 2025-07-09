@@ -8,6 +8,7 @@ import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.example.rickmortyapp.data.RepositoryImpl
+import org.example.rickmortyapp.data.local.dao.UserPreferencesDao
 import org.example.rickmortyapp.data.remote.ApiService
 import org.example.rickmortyapp.data.remote.paging.CharactersPagingSource
 import org.example.rickmortyapp.domain.Repository
@@ -31,7 +32,7 @@ val dataModule = module {
         }
     }
     factoryOf(::ApiService)
-    factory<Repository> { RepositoryImpl(get(), get()) }
+    factory<Repository> { RepositoryImpl(get(), get(), get()) }
     factoryOf(::CharactersPagingSource)
 
 }

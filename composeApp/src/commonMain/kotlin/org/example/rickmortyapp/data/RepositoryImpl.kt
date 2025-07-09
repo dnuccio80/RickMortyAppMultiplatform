@@ -4,14 +4,17 @@ import androidx.paging.PagingConfig
 import app.cash.paging.Pager
 import app.cash.paging.PagingData
 import kotlinx.coroutines.flow.Flow
+import org.example.rickmortyapp.data.local.database.RickMortyDataBase
 import org.example.rickmortyapp.data.remote.ApiService
 import org.example.rickmortyapp.data.remote.paging.CharactersPagingSource
 import org.example.rickmortyapp.domain.Repository
 import org.example.rickmortyapp.domain.model.CharacterModel
+import org.example.rickmortyapp.domain.model.CharacterOfTheDayModel
 
 class RepositoryImpl(
     private val apiService: ApiService,
-    private val charactersPagingSource: CharactersPagingSource
+    private val charactersPagingSource: CharactersPagingSource,
+    private val rickMortyDataBase: RickMortyDataBase
 ) : Repository {
 
     companion object {
@@ -28,5 +31,19 @@ class RepositoryImpl(
             config = PagingConfig(pageSize = MAX_ITEMS, prefetchDistance = PREFETCH_DISTANCE),
             pagingSourceFactory = { charactersPagingSource }
         ).flow
+    }
+
+    override suspend fun getCharacterOfTheDay():CharacterOfTheDayModel? {
+        if(rickMortyDataBase.getPreferencesDao().getCharacterOfTheDay() != null) {
+            return rickMortyDataBase.getPreferencesDao().getCharacterOfTheDay()!!.toDomain()
+        }
+       return null
+    }
+
+    override fun addCharacterOfTheDay(characterOfTheDayModel: CharacterOfTheDayModel) {
+        val newCharacter = characterOfTheDayModel.toEntity()
+        rickMortyDataBase.getPreferencesDao().addCharacterOfTheDay(
+            newCharacter
+        )
     }
 }
