@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun EpisodesScreen(innerPadding: PaddingValues) {
+fun EpisodesScreen() {
 
     val viewModel = koinViewModel<EpisodesViewModel>()
 

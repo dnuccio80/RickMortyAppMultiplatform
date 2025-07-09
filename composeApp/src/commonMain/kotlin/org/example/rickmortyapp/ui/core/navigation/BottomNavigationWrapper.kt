@@ -10,13 +10,13 @@ import org.example.rickmortyapp.ui.home.tabs.characters.CharacterScreen
 import org.example.rickmortyapp.ui.home.tabs.episodes.EpisodesScreen
 
 @Composable
-fun BottomNavigationWrapper(navController: NavHostController, innerPadding: PaddingValues) {
+fun BottomNavigationWrapper(navController: NavHostController) {
     NavHost(navController, startDestination = Routes.Episodes.route) {
         composable(Routes.Episodes.route) {
-            EpisodesScreen(innerPadding)
+            EpisodesScreen()
         }
         composable(Routes.Characters.route) {
-            CharacterScreen(innerPadding)
+            CharacterScreen()
         }
     }
 }
