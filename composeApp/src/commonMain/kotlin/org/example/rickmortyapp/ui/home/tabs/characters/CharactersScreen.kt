@@ -36,6 +36,7 @@ import androidx.paging.LoadState
 import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
+import org.example.rickmortyapp.core.Logger
 import org.example.rickmortyapp.domain.model.CharacterModel
 import org.example.rickmortyapp.ui.core.components.TitleItem
 import org.example.rickmortyapp.ui.home.tabs.CharacterState
@@ -49,6 +50,7 @@ fun CharacterScreen() {
     val state by viewmodel.state.collectAsState()
     val characters = state.characters.collectAsLazyPagingItems()
 
+    Logger.i("Damian", characters.itemCount.toString())
 
     Scaffold(modifier = Modifier.fillMaxSize(),) { innerPadding ->
         Box(modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = .6f)).padding(innerPadding))

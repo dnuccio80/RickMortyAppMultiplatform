@@ -10,7 +10,7 @@ data class CharacterResponse(
     val name:String,
     val image:String
 ) {
-    fun toCharacterModel(): CharacterModel {
+    fun toDomain(): CharacterModel {
         return CharacterModel(
             id = id,
             name = name,

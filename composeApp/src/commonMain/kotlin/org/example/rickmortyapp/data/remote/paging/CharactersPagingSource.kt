@@ -3,7 +3,6 @@ package org.example.rickmortyapp.data.remote.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import org.example.rickmortyapp.data.remote.ApiService
-import org.example.rickmortyapp.data.remote.response.CharacterResponse
 import org.example.rickmortyapp.domain.model.CharacterModel
 
 class CharactersPagingSource(private val apiService: ApiService): PagingSource<Int, CharacterModel>() {
@@ -15,7 +14,7 @@ class CharactersPagingSource(private val apiService: ApiService): PagingSource<I
         return try{
             val page = params.key ?: 1
             val response = apiService.getAllCharacters(page)
-            val characters = response.results.map { it.toCharacterModel() }
+            val characters = response.results.map { it.toDomain() }
             val prevPage = if (response.info.prev != null) page-1 else null
             val nextPage = if (response.info.next != null ) page + 1 else null
 
