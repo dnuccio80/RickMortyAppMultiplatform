@@ -3,6 +3,7 @@ package org.example.rickmortyapp.domain
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
+import org.example.rickmortyapp.core.Logger
 import org.example.rickmortyapp.domain.model.CharacterModel
 import org.example.rickmortyapp.domain.model.CharacterOfTheDayModel
 import kotlin.time.Clock
@@ -33,7 +34,7 @@ private suspend fun getRandomCharacter(repository: Repository):CharacterModel {
 @OptIn(ExperimentalTime::class)
 private fun getCurrentDate():String {
     val instant = Clock.System.now()
-    val localDate = instant.toLocalDateTime(TimeZone.UTC)
+    val localDate = instant.toLocalDateTime(TimeZone.currentSystemDefault())
 
     val day = localDate.day
     val month = localDate.month.number
