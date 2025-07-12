@@ -18,21 +18,20 @@ class GetCharacterOfTheDayUseCase(private val repository: Repository) {
         return if (characterOfTheDay == null || characterOfTheDay.date != date) {
             val newCharacterOfTheDay = getRandomCharacter(repository)
             repository.addCharacterOfTheDay(CharacterOfTheDayModel(newCharacterOfTheDay, date))
-            newCharacterOfTheDay
+            repository.getCharacterOfTheDay()!!.characterModel
         } else {
-            characterOfTheDay.characterModel
+             characterOfTheDay.characterModel
         }
-
     }
 }
 
-private suspend fun getRandomCharacter(repository: Repository):CharacterModel {
+private suspend fun getRandomCharacter(repository: Repository): CharacterModel {
     val randomId = (1..826).random()
     return repository.getSingleCharacter(randomId)
 }
 
 @OptIn(ExperimentalTime::class)
-private fun getCurrentDate():String {
+private fun getCurrentDate(): String {
     val instant = Clock.System.now()
     val localDate = instant.toLocalDateTime(TimeZone.currentSystemDefault())
 

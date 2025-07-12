@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.example.rickmortyapp.domain.GetCharacterOfTheDayUseCase
 import org.example.rickmortyapp.domain.Repository
-import org.example.rickmortyapp.ui.home.tabs.CharacterState
 
 class CharactersViewModel(private val getCharacterOfTheDayUseCase: GetCharacterOfTheDayUseCase, private val repository: Repository):ViewModel() {
 

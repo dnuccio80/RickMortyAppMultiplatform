@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,8 +26,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalMapOf
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import app.cash.paging.compose.collectAsLazyPagingItems
@@ -41,6 +47,7 @@ import org.example.rickmortyapp.domain.model.SeasonNumber.SEASON_6
 import org.example.rickmortyapp.domain.model.SeasonNumber.SEASON_7
 import org.example.rickmortyapp.domain.model.SeasonNumber.SEASON_8
 import org.example.rickmortyapp.domain.model.SeasonNumber.UNKNOWN
+import org.example.rickmortyapp.ui.core.components.ProgressIndicatorItem
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import rickmortyapp.composeapp.generated.resources.Res
@@ -65,57 +72,18 @@ fun EpisodesScreen() {
     Logger.i("Damian", episodes.itemCount.toString())
 
     Scaffold { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize().background(Color.DarkGray))
-        LazyRow  (
-            modifier = Modifier.fillMaxWidth().height(350.dp).padding(innerPadding),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            when {
-                // First Loading
-                episodes.loadState.refresh is LoadState.Loading && episodes.itemCount == 0 -> {
-                    item {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(64.dp),
-                                color = Color.Green
-                            )
-                        }
-                    }
-                }
-
-                episodes.loadState.refresh is LoadState.NotLoading && episodes.itemCount == 0 -> {
-                    item {
-                        Text("No Results Found")
-                    }
-                }
-
-                else -> {
-                    // Load Content
-                    items(episodes.itemCount) { pos ->
-                        episodes[pos]?.let {
-                            EpisodeListItem(it)
-                        }
-                    }
-
-                    // More content to load
-                    if (episodes.loadState.append is LoadState.Loading) {
-                        item {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(64.dp),
-                                    color = Color.Green
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+        Box(modifier = Modifier.fillMaxSize().padding(innerPadding).background(Color.DarkGray)) {
+            PagingWrapper(
+                pagingItems = episodes,
+                contentType = ContentType.ROW,
+                itemContent = {
+                    EpisodeListItem(it)
+                },
+                loadingContent = {
+                    ProgressIndicatorItem()
+                },
+                emptyContent = { }
+            )
         }
     }
 }
@@ -123,7 +91,7 @@ fun EpisodesScreen() {
 @Composable
 fun EpisodeListItem(episode: EpisodeModel) {
 
-    val image = when(episode.season) {
+    val image = when (episode.season) {
         SEASON_1 -> painterResource(Res.drawable.season_1)
         SEASON_2 -> painterResource(Res.drawable.season_2)
         SEASON_3 -> painterResource(Res.drawable.season_3)
@@ -145,8 +113,48 @@ fun EpisodeListItem(episode: EpisodeModel) {
             containerColor = Color.Black
         )
     ) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Image(image, contentDescription = "", modifier = Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+            Image(
+                image,
+                contentDescription = "",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillBounds
+            )
+            Box(modifier = Modifier.fillMaxSize().background(
+                Brush.verticalGradient(listOf(
+                    Color.Transparent,
+                    Color.Black.copy(alpha = .7f),
+                ))
+            ))
+            Box(
+                modifier = Modifier.fillMaxWidth().height(60.dp)
+                    .background(Color.Green.copy(alpha = .6f))
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "Season ${
+                            episode.season.toString().substringAfter("_")
+                        } | Episode ${episode.episode.substringAfter("E")}",
+                        textAlign = TextAlign.Center,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        episode.name,
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
+                        minLines = 1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
     }
 }

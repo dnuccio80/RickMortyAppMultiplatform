@@ -5,15 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -32,14 +27,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.paging.LoadState
 import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
 import org.example.rickmortyapp.core.Logger
 import org.example.rickmortyapp.domain.model.CharacterModel
+import org.example.rickmortyapp.ui.core.components.ProgressIndicatorItem
 import org.example.rickmortyapp.ui.core.components.TitleItem
-import org.example.rickmortyapp.ui.home.tabs.CharacterState
+import org.example.rickmortyapp.ui.home.tabs.episodes.ContentType
+import org.example.rickmortyapp.ui.home.tabs.episodes.PagingWrapper
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -52,90 +48,59 @@ fun CharacterScreen() {
 
     Logger.i("Damian", characters.itemCount.toString())
 
-    Scaffold(modifier = Modifier.fillMaxSize(),) { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = .6f)).padding(innerPadding))
-        CharacterGridList(characters, state, innerPadding)
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Box(
+            modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = .6f))
+                .padding(innerPadding)
+        ) {
+            CharacterPagingWrapper(characters, state)
+        }
     }
 }
 
 @Composable
-fun CharacterGridList(
+private fun CharacterPagingWrapper(
     characters: LazyPagingItems<CharacterModel>,
-    state: CharacterState,
-    innerPadding: PaddingValues
+    state: CharacterState
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier.fillMaxSize().padding(innerPadding),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-
-        item(span = { GridItemSpan(2) }) {
-            state.characterOfTheDay?.name?.let {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = "Character of the Day",
-                        textAlign = TextAlign.Center,
-                        fontSize = 34.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = Color.DarkGray,
-                    )
-                    TitleItem(it)
-                }
+    PagingWrapper(
+        pagingItems = characters,
+        contentType = ContentType.VERTICAL_GRID,
+        itemContent = {
+            CharacterListItem(it)
+        },
+        loadingContent = {
+            ProgressIndicatorItem()
+        },
+        emptyContent = {},
+        additionalContent = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                CharacterOfTheDayTitle(state)
+                CharacterOfTheDayCardItem(state)
             }
         }
+    )
+}
 
-        item(span = { GridItemSpan(2) }) {
-            CharacterOfTheDayCardItem(state)
-        }
-
-        when {
-            characters.loadState.refresh is LoadState.Loading && characters.itemCount == 0 -> {
-                // Initial Load
-                item(span = { GridItemSpan(2) }) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(64.dp),
-                            color = Color.Red
-                        )
-                    }
-                }
-            }
-
-            characters.loadState.refresh is LoadState.NotLoading && characters.itemCount == 0 -> {
-                item {
-                    Text("No results found")
-                }
-            }
-
-            else -> {
-                // Load Content
-                items(characters.itemCount) { pos ->
-                    characters[pos]?.let {
-                        CharacterListItem(it)
-                    }
-                }
-
-                // More content to load
-                if (characters.loadState.append is LoadState.Loading) {
-                    item(span = { GridItemSpan(2) }) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(64.dp),
-                                color = Color.Red
-                            )
-                        }
-                    }
-                }
-            }
+@Composable
+private fun CharacterOfTheDayTitle(state: CharacterState) {
+    state.characterOfTheDay?.name?.let {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Character of the Day",
+                textAlign = TextAlign.Center,
+                fontSize = 34.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = Color.DarkGray,
+            )
+            TitleItem(it)
         }
     }
 }
@@ -167,7 +132,8 @@ fun CharacterListItem(characterModel: CharacterModel) {
                     textAlign = TextAlign.Center,
                     color = Color.White,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(horizontal = 4.dp)
                 )
             }
         }
@@ -189,7 +155,7 @@ private fun CharacterOfTheDayCardItem(state: CharacterState) {
             }
         } else {
             AsyncImage(
-                model = state.characterOfTheDay?.image,
+                model = state.characterOfTheDay.image,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
                 contentDescription = "",

@@ -1,4 +1,4 @@
-package org.example.rickmortyapp.ui.home.tabs
+package org.example.rickmortyapp.ui.home.tabs.characters
 
 import app.cash.paging.PagingData
 import kotlinx.coroutines.flow.Flow
