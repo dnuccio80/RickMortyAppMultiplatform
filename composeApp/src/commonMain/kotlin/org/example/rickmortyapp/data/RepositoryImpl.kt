@@ -56,4 +56,9 @@ class RepositoryImpl(
             pagingSourceFactory = { episodesPagingSource }
         ).flow
     }
+
+    override suspend fun getMultipleEpisodes(idList: String): List<EpisodeModel> {
+       return apiService.getMultipleEpisodes(idList).map { it.toDomain() }
+    }
+
 }

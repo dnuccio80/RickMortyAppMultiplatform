@@ -11,7 +11,12 @@ data class CharacterOfTheDayModel(
             id = characterModel.id,
             name = characterModel.name,
             image = characterModel.image,
-            date = date
+            date = date,
+            status = characterModel.status,
+            species = characterModel.species,
+            origin = characterModel.origin,
+            location = characterModel.location,
+            episode = characterModel.episode
         )
     }
 }

@@ -19,7 +19,7 @@ import org.example.rickmortyapp.ui.core.NavBottomType.Episodes
 import org.example.rickmortyapp.ui.core.navigation.BottomNavigationWrapper
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(mainNavController: NavHostController) {
 
     val bottomNavList = listOf(
         Episodes(),
@@ -29,7 +29,7 @@ fun HomeScreen() {
 
     Scaffold(bottomBar = { BottomBar(navController, bottomNavList) }) { innerPadding ->
         Box {
-            BottomNavigationWrapper(navController)
+            BottomNavigationWrapper(navController, mainNavController)
         }
     }
 }

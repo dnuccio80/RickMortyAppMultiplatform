@@ -8,6 +8,7 @@ import io.ktor.http.parameters
 import io.ktor.http.parseAndSortContentTypeHeader
 import org.example.rickmortyapp.data.remote.response.CharacterResponse
 import org.example.rickmortyapp.data.remote.response.CharactersWrapperResponse
+import org.example.rickmortyapp.data.remote.response.EpisodeResponse
 import org.example.rickmortyapp.data.remote.response.EpisodesWrapperResponse
 
 class ApiService(private val client: HttpClient) {
@@ -25,6 +26,10 @@ class ApiService(private val client: HttpClient) {
         return client.get("/api/episode/") {
             parameter("page", page)
         }.body()
+    }
+
+    suspend fun getMultipleEpisodes(idList:String): List<EpisodeResponse> {
+        return client.get("/api/episode/$idList").body()
     }
 
 }

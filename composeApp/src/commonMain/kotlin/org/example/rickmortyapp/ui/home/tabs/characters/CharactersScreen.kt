@@ -2,6 +2,7 @@ package org.example.rickmortyapp.ui.home.tabs.characters
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,21 +40,21 @@ import org.example.rickmortyapp.ui.home.tabs.episodes.PagingWrapper
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun CharacterScreen() {
+fun CharacterScreen(onItemClicked: (CharacterModel) -> Unit) {
 
     val viewmodel = koinViewModel<CharactersViewModel>()
 
     val state by viewmodel.state.collectAsState()
     val characters = state.characters.collectAsLazyPagingItems()
 
-    Logger.i("Damian", characters.itemCount.toString())
-
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(
             modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = .6f))
                 .padding(innerPadding)
         ) {
-            CharacterPagingWrapper(characters, state)
+            CharacterPagingWrapper(characters, state) {
+                onItemClicked(it)
+            }
         }
     }
 }
@@ -61,13 +62,16 @@ fun CharacterScreen() {
 @Composable
 private fun CharacterPagingWrapper(
     characters: LazyPagingItems<CharacterModel>,
-    state: CharacterState
+    state: CharacterState,
+    onItemClicked: (CharacterModel) -> Unit
 ) {
     PagingWrapper(
         pagingItems = characters,
         contentType = ContentType.VERTICAL_GRID,
         itemContent = {
-            CharacterListItem(it)
+            CharacterListItem(it) { character ->
+                onItemClicked(character)
+            }
         },
         loadingContent = {
             ProgressIndicatorItem()
@@ -106,9 +110,12 @@ private fun CharacterOfTheDayTitle(state: CharacterState) {
 }
 
 @Composable
-fun CharacterListItem(characterModel: CharacterModel) {
+fun CharacterListItem(characterModel: CharacterModel, onItemClicked:(CharacterModel) -> Unit) {
     Card(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .clickable {
+                onItemClicked(characterModel)
+            },
         elevation = CardDefaults.cardElevation(16.dp),
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(1.dp, Color.Green)

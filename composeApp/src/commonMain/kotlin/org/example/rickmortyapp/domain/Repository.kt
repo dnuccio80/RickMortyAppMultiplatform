@@ -12,4 +12,5 @@ interface Repository {
     suspend fun getCharacterOfTheDay():CharacterOfTheDayModel?
     fun addCharacterOfTheDay(characterOfTheDayModel: CharacterOfTheDayModel)
     fun getAllEpisodes():Flow<PagingData<EpisodeModel>>
+    suspend fun getMultipleEpisodes(idList:String): List<EpisodeModel>
 }
