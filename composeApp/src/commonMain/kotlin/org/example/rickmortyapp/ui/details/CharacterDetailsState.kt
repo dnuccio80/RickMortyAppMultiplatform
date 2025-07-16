@@ -5,5 +5,5 @@ import org.example.rickmortyapp.domain.model.EpisodeModel
 
 data class CharacterDetailsState(
     val characterModel: CharacterModel,
-    val episodes:List<EpisodeModel> = emptyList()
+    val episodes:List<EpisodeModel>? = null
 )

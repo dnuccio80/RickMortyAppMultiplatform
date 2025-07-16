@@ -32,4 +32,8 @@ class ApiService(private val client: HttpClient) {
         return client.get("/api/episode/$idList").body()
     }
 
+    suspend fun getSingleEpisode(id:Int): EpisodeResponse {
+        return client.get("/api/episode/$id").body()
+    }
+
 }

@@ -57,8 +57,13 @@ class RepositoryImpl(
         ).flow
     }
 
-    override suspend fun getMultipleEpisodes(idList: String): List<EpisodeModel> {
-       return apiService.getMultipleEpisodes(idList).map { it.toDomain() }
+    override suspend fun getCharacterEpisodes(idList: List<String>): List<EpisodeModel> {
+        return if (idList.isEmpty()) emptyList()
+        else if (idList.size == 1) {
+            listOf(apiService.getSingleEpisode(idList[0].toInt()).toDomain())
+        } else {
+            val idInString = idList.joinToString(",")
+            apiService.getMultipleEpisodes(idInString).map { it.toDomain() }
+        }
     }
-
 }

@@ -26,7 +26,7 @@ data class CharacterResponse(
             species = species,
             origin = origin.name,
             location = location.name,
-            episode = encodeEpisodeList(episode)
+            episode = if(episode.size == 1) encodeEpisode(episode[0]) else encodeEpisodeList(episode)
         )
     }
 
@@ -37,5 +37,9 @@ data class CharacterResponse(
     private fun encodeEpisodeList(episodeList: List<String>): String {
         val subStringList = episodeList.map { episode -> episode.substringAfter("episode/") }
         return Json.encodeToString(subStringList)
+    }
+
+    private fun encodeEpisode(episode:String):String {
+        return episode.substringAfter("episode/")
     }
 }

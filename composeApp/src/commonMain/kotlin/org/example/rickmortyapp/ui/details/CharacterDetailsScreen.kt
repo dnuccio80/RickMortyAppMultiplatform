@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +36,11 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import org.example.rickmortyapp.domain.model.CharacterModel
 import org.example.rickmortyapp.domain.model.EpisodeModel
+import org.example.rickmortyapp.ui.core.BackgroundPrimaryColor
+import org.example.rickmortyapp.ui.core.BackgroundTertiaryColor
+import org.example.rickmortyapp.ui.core.DefaultTextColor
+import org.example.rickmortyapp.ui.core.Green
+import org.example.rickmortyapp.ui.core.Pink
 import org.example.rickmortyapp.ui.core.extensions.aliveBorder
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -52,96 +58,13 @@ fun CharacterDetailsScreen(characterModel: CharacterModel) {
     val character = state.characterModel
     val episodes = state.episodes
 
-    Column(modifier = Modifier.fillMaxSize().background(Color.White)) {
+    Column(modifier = Modifier.fillMaxSize().background(BackgroundPrimaryColor)) {
         MainHeader(character)
         Body(character, episodes)
     }
 }
 
-@Composable
-private fun Body(character: CharacterModel, episodes: List<EpisodeModel>) {
 
-    ElevatedCard(
-        modifier = Modifier.padding(16.dp).fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Gray
-        ),
-        elevation = CardDefaults.cardElevation(16.dp),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                "ABOUT THE CHARACTER",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.ExtraBold,
-                color = Color.White
-            )
-            // USE CHARACTER origin.name
-            RowDescriptionItem("Origin", character.origin)
-            RowDescriptionItem("Location", character.location)
-        }
-    }
-
-    ElevatedCard(
-        modifier = Modifier.padding(16.dp).fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Gray
-        ),
-        elevation = CardDefaults.cardElevation(16.dp),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Text(
-            "EPISODES LIST",
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = Color.White
-        )
-        Column(
-            modifier = Modifier.padding(16.dp).heightIn(max = 300.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            episodes.forEach {
-                ColumnDescriptionItem(title = it.name, description = it.episode)
-            }
-        }
-    }
-}
-
-@Composable
-private fun RowDescriptionItem(title: String, description: String) {
-    Row(
-        modifier = Modifier.padding(horizontal = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text(
-            "${title}:",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(
-            description,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Green,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-@Composable
-private fun ColumnDescriptionItem(title: String, description: String) {
-    Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-        Text(title, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Color.Green)
-        Text(description, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
-    }
-}
 
 @Composable
 fun MainHeader(character: CharacterModel) {
@@ -164,18 +87,18 @@ fun CharacterHeader(character: CharacterModel) {
                 .fillMaxWidth()
                 .height(100.dp)
                 .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
-                .background(Color.White),
+                .background(BackgroundPrimaryColor),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.size(32.dp))
             Text(
                 character.name,
-                color = Color.Black,
+                color = Pink,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
-            Text("Specie: ${character.species}", color = Color.Black)
+            Text("Specie: ${character.species}", color = Color.Black, fontWeight = FontWeight.SemiBold)
         }
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -197,7 +120,7 @@ fun CharacterHeader(character: CharacterModel) {
                     )
                 }
                 val aliveStatus = if (character.status) "ALIVE" else "DEAD"
-                val backgroundColor = if (character.status) Color.Green else Color.Red
+                val backgroundColor = if (character.status) Green else Color.Red
                 Text(
                     aliveStatus, color = Color.White, fontSize = 16.sp, modifier = Modifier.clip(
                         RoundedCornerShape(30.dp)
@@ -205,5 +128,96 @@ fun CharacterHeader(character: CharacterModel) {
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun Body(character: CharacterModel, episodes: List<EpisodeModel>?) {
+
+    ElevatedCard(
+        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = BackgroundTertiaryColor
+        ),
+        elevation = CardDefaults.cardElevation(16.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                "ABOUT THE CHARACTER",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = DefaultTextColor
+            )
+            // USE CHARACTER origin.name
+            RowDescriptionItem("Origin", character.origin)
+            RowDescriptionItem("Location", character.location)
+        }
+    }
+
+    ElevatedCard(
+        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = BackgroundTertiaryColor
+        ),
+        elevation = CardDefaults.cardElevation(16.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Text(
+            "EPISODES LIST",
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+            fontSize = 24.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = Color.White
+        )
+        Column(
+            modifier = Modifier.padding(16.dp).heightIn(max = 300.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            if(episodes == null){
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = Color.Green)
+                }
+            } else {
+                episodes.forEach {
+                    ColumnDescriptionItem(title = it.name, description = it.episode)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RowDescriptionItem(title: String, description: String) {
+    Row(
+        modifier = Modifier.padding(horizontal = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(
+            "${title}:",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = DefaultTextColor,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            description,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = Green,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+private fun ColumnDescriptionItem(title: String, description: String) {
+    Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+        Text(title, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Green)
+        Text(description, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = DefaultTextColor)
     }
 }
