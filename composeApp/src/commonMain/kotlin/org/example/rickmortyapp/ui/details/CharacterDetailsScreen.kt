@@ -37,6 +37,7 @@ import coil3.compose.AsyncImage
 import org.example.rickmortyapp.domain.model.CharacterModel
 import org.example.rickmortyapp.domain.model.EpisodeModel
 import org.example.rickmortyapp.ui.core.BackgroundPrimaryColor
+import org.example.rickmortyapp.ui.core.BackgroundSecondaryColor
 import org.example.rickmortyapp.ui.core.BackgroundTertiaryColor
 import org.example.rickmortyapp.ui.core.DefaultTextColor
 import org.example.rickmortyapp.ui.core.Green
@@ -87,7 +88,7 @@ fun CharacterHeader(character: CharacterModel) {
                 .fillMaxWidth()
                 .height(100.dp)
                 .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
-                .background(BackgroundPrimaryColor),
+                .background(BackgroundSecondaryColor),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -171,7 +172,7 @@ private fun Body(character: CharacterModel, episodes: List<EpisodeModel>?) {
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
             fontSize = 24.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = Color.White
+            color = DefaultTextColor
         )
         Column(
             modifier = Modifier.padding(16.dp).heightIn(max = 300.dp)

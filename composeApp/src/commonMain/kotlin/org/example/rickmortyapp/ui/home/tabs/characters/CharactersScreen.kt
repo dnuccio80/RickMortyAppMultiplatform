@@ -2,6 +2,7 @@ package org.example.rickmortyapp.ui.home.tabs.characters
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +34,9 @@ import app.cash.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
 import org.example.rickmortyapp.core.Logger
 import org.example.rickmortyapp.domain.model.CharacterModel
+import org.example.rickmortyapp.ui.core.BackgroundPrimaryColor
+import org.example.rickmortyapp.ui.core.DefaultTextColor
+import org.example.rickmortyapp.ui.core.Green
 import org.example.rickmortyapp.ui.core.components.ProgressIndicatorItem
 import org.example.rickmortyapp.ui.core.components.TitleItem
 import org.example.rickmortyapp.ui.home.tabs.episodes.ContentType
@@ -49,7 +53,7 @@ fun CharacterScreen(onItemClicked: (CharacterModel) -> Unit) {
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(
-            modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = .6f))
+            modifier = Modifier.fillMaxSize().background(BackgroundPrimaryColor)
                 .padding(innerPadding)
         ) {
             CharacterPagingWrapper(characters, state) {
@@ -102,7 +106,7 @@ private fun CharacterOfTheDayTitle(state: CharacterState) {
                 textAlign = TextAlign.Center,
                 fontSize = 34.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = Color.DarkGray,
+                color = DefaultTextColor,
             )
             TitleItem(it)
         }
@@ -118,7 +122,7 @@ fun CharacterListItem(characterModel: CharacterModel, onItemClicked:(CharacterMo
             },
         elevation = CardDefaults.cardElevation(16.dp),
         shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, Color.Green)
+        border = BorderStroke(1.dp, Green)
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
             AsyncImage(
@@ -129,7 +133,7 @@ fun CharacterListItem(characterModel: CharacterModel, onItemClicked:(CharacterMo
             )
             Box(
                 modifier = Modifier.fillMaxWidth().height(45.dp)
-                    .background(Color.Green.copy(alpha = .6f)), contentAlignment = Alignment.Center
+                    .background(Green.copy(alpha = .8f)), contentAlignment = Alignment.Center
             ) {
                 Text(
                     characterModel.name,
@@ -163,7 +167,7 @@ private fun CharacterOfTheDayCardItem(state: CharacterState) {
         } else {
             AsyncImage(
                 model = state.characterOfTheDay.image,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().border(4.dp, color = Green),
                 contentScale = ContentScale.Crop,
                 contentDescription = "",
             )

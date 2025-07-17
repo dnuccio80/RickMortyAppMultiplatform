@@ -6,11 +6,11 @@ import androidx.compose.ui.graphics.Color
 
 val BackgroundPrimaryColor
     @Composable
-    get() = if(isSystemInDarkTheme()) PrimaryBlack.copy(alpha = .2f) else PrimaryWhite
+    get() = if(isSystemInDarkTheme()) PrimaryBlack.copy(alpha = .8f) else PrimaryWhite
 
 val BackgroundSecondaryColor
     @Composable
-    get() = if(isSystemInDarkTheme()) SecondaryBlack else SecondaryWhite
+    get() = if(isSystemInDarkTheme()) SecondaryBlack else PrimaryWhite
 
 val BackgroundTertiaryColor
     @Composable

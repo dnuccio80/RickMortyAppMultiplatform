@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.cash.paging.compose.collectAsLazyPagingItems
-import org.example.rickmortyapp.core.Logger
 import org.example.rickmortyapp.domain.model.EpisodeModel
 import org.example.rickmortyapp.domain.model.SeasonNumber.SEASON_1
 import org.example.rickmortyapp.domain.model.SeasonNumber.SEASON_2
@@ -42,6 +41,8 @@ import org.example.rickmortyapp.domain.model.SeasonNumber.SEASON_6
 import org.example.rickmortyapp.domain.model.SeasonNumber.SEASON_7
 import org.example.rickmortyapp.domain.model.SeasonNumber.SEASON_8
 import org.example.rickmortyapp.domain.model.SeasonNumber.UNKNOWN
+import org.example.rickmortyapp.ui.core.BackgroundPrimaryColor
+import org.example.rickmortyapp.ui.core.Green
 import org.example.rickmortyapp.ui.core.components.ProgressIndicatorItem
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -64,8 +65,8 @@ fun EpisodesScreen() {
     val state by viewModel.state.collectAsState()
     val episodes = state.episodes.collectAsLazyPagingItems()
 
-    Scaffold { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize().padding(innerPadding).background(Color.DarkGray)) {
+//    Scaffold { innerPadding ->
+        Box(modifier = Modifier.fillMaxSize().background(BackgroundPrimaryColor)) {
             PagingWrapper(
                 pagingItems = episodes,
                 contentType = ContentType.ROW,
@@ -74,11 +75,10 @@ fun EpisodesScreen() {
                 },
                 loadingContent = {
                     ProgressIndicatorItem()
-                },
-                emptyContent = { }
+                }
             )
         }
-    }
+//    }
 }
 
 @Composable
@@ -101,7 +101,7 @@ fun EpisodeListItem(episode: EpisodeModel) {
         },
         elevation = CardDefaults.cardElevation(16.dp),
         shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(1.dp, Color.Green.copy(alpha = .6f)),
+        border = BorderStroke(1.dp, Green.copy(alpha = .6f)),
         colors = CardDefaults.cardColors(
             containerColor = Color.Black
         )
@@ -121,7 +121,7 @@ fun EpisodeListItem(episode: EpisodeModel) {
             ))
             Box(
                 modifier = Modifier.fillMaxWidth().height(60.dp)
-                    .background(Color.Green.copy(alpha = .6f))
+                    .background(Green.copy(alpha = .6f))
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),

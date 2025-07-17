@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import org.example.rickmortyapp.ui.core.DefaultTextColor
 
 @Composable
 fun TitleItem(text:String) {
@@ -18,6 +19,7 @@ fun TitleItem(text:String) {
             textAlign = TextAlign.Center,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
+            color = DefaultTextColor
         )
     }
 }
