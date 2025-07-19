@@ -22,8 +22,11 @@ fun NavigationWrapper() {
         }
 
         composable<CharacterDetail> { navBackStackEntry ->
-            val characterDetailEncode: CharacterDetail = navBackStackEntry.toRoute<CharacterDetail>()
-            val characterModel: CharacterModel = Json.decodeFromString<CharacterModel>(characterDetailEncode.characterModel)
-            CharacterDetailsScreen(characterModel) }
+            val characterDetailEncode: CharacterDetail =
+                navBackStackEntry.toRoute<CharacterDetail>()
+            val characterModel: CharacterModel =
+                Json.decodeFromString<CharacterModel>(characterDetailEncode.characterModel)
+            CharacterDetailsScreen(characterModel) { mainNavController.popBackStack() }
+        }
     }
 }

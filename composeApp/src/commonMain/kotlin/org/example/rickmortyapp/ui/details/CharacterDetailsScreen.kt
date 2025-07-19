@@ -2,6 +2,7 @@ package org.example.rickmortyapp.ui.details
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import org.example.rickmortyapp.domain.model.CharacterModel
 import org.example.rickmortyapp.domain.model.EpisodeModel
+import org.example.rickmortyapp.isDesktopTarget
 import org.example.rickmortyapp.ui.core.BackgroundPrimaryColor
 import org.example.rickmortyapp.ui.core.BackgroundSecondaryColor
 import org.example.rickmortyapp.ui.core.BackgroundTertiaryColor
@@ -47,10 +50,11 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parameterSetOf
 import rickmortyapp.composeapp.generated.resources.Res
+import rickmortyapp.composeapp.generated.resources.ic_back
 import rickmortyapp.composeapp.generated.resources.star_background
 
 @Composable
-fun CharacterDetailsScreen(characterModel: CharacterModel) {
+fun CharacterDetailsScreen(characterModel: CharacterModel, onBackButtonPressed: () -> Unit) {
 
     val characterDetailViewModel =
         koinViewModel<CharacterDetailsViewModel>(parameters = { parameterSetOf(characterModel) })
@@ -60,22 +64,31 @@ fun CharacterDetailsScreen(characterModel: CharacterModel) {
     val episodes = state.episodes
 
     Column(modifier = Modifier.fillMaxSize().background(BackgroundPrimaryColor)) {
-        MainHeader(character)
+        MainHeader(character) { onBackButtonPressed() }
         Body(character, episodes)
     }
 }
 
 
-
 @Composable
-fun MainHeader(character: CharacterModel) {
-    Box(modifier = Modifier.fillMaxWidth().height(300.dp)) {
+fun MainHeader(character: CharacterModel, onBackButtonPressed: () -> Unit) {
+    Box(modifier = Modifier.fillMaxWidth().height(300.dp), contentAlignment = Alignment.TopStart) {
         Image(
             painter = painterResource(Res.drawable.star_background),
             contentDescription = "",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
+        if (isDesktopTarget()) {
+            Icon(
+                painter = painterResource(Res.drawable.ic_back),
+                contentDescription = null,
+                modifier = Modifier.padding(16.dp).size(24.dp).clickable {
+                    onBackButtonPressed()
+                },
+                tint = Color.White
+            )
+        }
         CharacterHeader(character)
     }
 }
@@ -99,7 +112,11 @@ fun CharacterHeader(character: CharacterModel) {
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
-            Text("Specie: ${character.species}", color = Color.Black, fontWeight = FontWeight.SemiBold)
+            Text(
+                "Specie: ${character.species}",
+                color = Color.Black,
+                fontWeight = FontWeight.SemiBold
+            )
         }
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -179,7 +196,7 @@ private fun Body(character: CharacterModel, episodes: List<EpisodeModel>?) {
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            if(episodes == null){
+            if (episodes == null) {
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = Color.Green)
                 }
@@ -219,6 +236,11 @@ private fun RowDescriptionItem(title: String, description: String) {
 private fun ColumnDescriptionItem(title: String, description: String) {
     Column(modifier = Modifier.padding(horizontal = 8.dp)) {
         Text(title, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Green)
-        Text(description, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = DefaultTextColor)
+        Text(
+            description,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = DefaultTextColor
+        )
     }
 }
