@@ -10,9 +10,9 @@ import org.example.rickmortyapp.data.local.entity.CharacterOfTheDayEntity
 interface UserPreferencesDao {
 
     @Query("SELECT * FROM CharacterOfTheDayEntity")
-    fun getCharacterOfTheDay(): CharacterOfTheDayEntity?
+    suspend fun getCharacterOfTheDay(): CharacterOfTheDayEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addCharacterOfTheDay(characterOfTheDayEntity: CharacterOfTheDayEntity)
+    suspend fun addCharacterOfTheDay(characterOfTheDayEntity: CharacterOfTheDayEntity)
 
 }

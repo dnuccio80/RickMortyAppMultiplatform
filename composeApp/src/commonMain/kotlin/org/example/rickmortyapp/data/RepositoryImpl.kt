@@ -29,7 +29,7 @@ class RepositoryImpl(
         return apiService.getSingleCharacter(id).toDomain()
     }
 
-    override fun getAllCharacters(): Flow<PagingData<CharacterModel>> {
+    override suspend fun getAllCharacters(): Flow<PagingData<CharacterModel>> {
         return Pager(
             config = PagingConfig(pageSize = MAX_ITEMS, prefetchDistance = PREFETCH_DISTANCE),
             pagingSourceFactory = { charactersPagingSource }
@@ -43,14 +43,14 @@ class RepositoryImpl(
         return null
     }
 
-    override fun addCharacterOfTheDay(characterOfTheDayModel: CharacterOfTheDayModel) {
+    override suspend fun addCharacterOfTheDay(characterOfTheDayModel: CharacterOfTheDayModel) {
         val newCharacter = characterOfTheDayModel.toEntity()
         rickMortyDataBase.getPreferencesDao().addCharacterOfTheDay(
             newCharacter
         )
     }
 
-    override fun getAllEpisodes(): Flow<PagingData<EpisodeModel>> {
+    override suspend fun getAllEpisodes(): Flow<PagingData<EpisodeModel>> {
         return Pager(
             config = PagingConfig(pageSize = MAX_ITEMS, prefetchDistance = PREFETCH_DISTANCE),
             pagingSourceFactory = { episodesPagingSource }

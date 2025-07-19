@@ -1,3 +1,4 @@
+import com.google.devtools.ksp.processing.Target
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -23,6 +24,8 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
+
+    jvm("desktop")
     
     listOf(
         iosX64(),
@@ -36,7 +39,11 @@ kotlin {
     }
     
     sourceSets {
+
+        val desktopMain by getting
+
         task("testClasses")
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -86,6 +93,12 @@ kotlin {
         }
         iosMain.dependencies {
                 implementation(libs.ktor.client.darwin)
+        }
+
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutinesSwing)
+            implementation(libs.ktor.client.desktop)
         }
     }
 }
@@ -140,4 +153,16 @@ dependencies {
     add("kspIosX64", libs.room.compiler)
     add("kspIosArm64", libs.room.compiler)
     add("kspIosSimulatorArm64", libs.room.compiler)
+    add("kspDesktop", libs.room.compiler)
+}
+
+compose.desktop {
+    application {
+        mainClass = "org.example.rickmortyapp.MainKt"
+        nativeDistributions{
+            targetFormats(TargetFormat.Msi, TargetFormat.Dmg, TargetFormat.Deb)
+            packageName = "org.example.rickmortyapp"
+            version = "1.0.1"
+        }
+    }
 }

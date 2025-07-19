@@ -1,5 +1,5 @@
 [versions]
-agp = "8.9.1"
+agp = "8.9.3"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
@@ -26,17 +26,19 @@ uiGraphicsAndroid = "1.8.3"
 material3Android = "1.3.2"
 
 # Ktor & Coil
-ktor-client = "2.3.6"
-coilComposeCore = "3.0.0-alpha06"
+ktor-client = "2.3.12"
+coilComposeCore = "3.0.0-alpha08"
 foundationAndroid = "1.8.3"
 uiTextAndroid = "1.8.3"
 
 # Room
 roomCommon = "2.7.2"
-ksp = "2.1.21-2.0.1"
+ksp = "2.2.0-2.0.2"
 androidx-sqliteBundled = "2.5.2"
 media3CommonKtx = "1.7.1"
 window = "1.4.0"
+
+kotlinx-coroutines = "1.10.2"
 
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
@@ -63,10 +65,14 @@ navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-co
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
+
+# Ktor
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor-client" }
+ktor-client-desktop = { module = "io.ktor:ktor-client-cio", version.ref = "ktor-client" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-client" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor-client" }
 
@@ -84,6 +90,8 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqliteBundled" }
 androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 androidx-window = { group = "androidx.window", name = "window", version.ref = "window" }
+
+# Desktop
 
 
 [plugins]

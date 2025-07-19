@@ -8,9 +8,9 @@ import org.example.rickmortyapp.domain.model.EpisodeModel
 
 interface Repository {
     suspend fun getSingleCharacter(id: Int): CharacterModel
-    fun getAllCharacters(): Flow<PagingData<CharacterModel>>
+    suspend fun getAllCharacters(): Flow<PagingData<CharacterModel>>
     suspend fun getCharacterOfTheDay(): CharacterOfTheDayModel?
-    fun addCharacterOfTheDay(characterOfTheDayModel: CharacterOfTheDayModel)
-    fun getAllEpisodes(): Flow<PagingData<EpisodeModel>>
+    suspend fun addCharacterOfTheDay(characterOfTheDayModel: CharacterOfTheDayModel)
+    suspend fun getAllEpisodes(): Flow<PagingData<EpisodeModel>>
     suspend fun getCharacterEpisodes(idList: List<String>): List<EpisodeModel>
 }
