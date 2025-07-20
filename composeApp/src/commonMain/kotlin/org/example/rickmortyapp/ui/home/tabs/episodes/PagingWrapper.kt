@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import app.cash.paging.compose.LazyPagingItems
+import org.example.rickmortyapp.ui.core.components.LazyRowTarget
+import org.example.rickmortyapp.ui.core.components.LazyVerticalGridTarget
 import org.example.rickmortyapp.ui.home.tabs.episodes.ContentType.*
 
 enum class ContentType {
@@ -47,36 +49,18 @@ fun <T : Any> PagingWrapper(
             // Load Content
             when (contentType) {
                 VERTICAL_GRID -> {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        if(additionalContent != {}) {
-                            item(span = { GridItemSpan(2) }) {
-                                additionalContent()
-                            }
-                        }
-                        items(pagingItems.itemCount) { pos ->
-                            pagingItems[pos]?.let {
-                                itemContent(it)
-                            }
-                        }
-                    }
+                    LazyVerticalGridTarget(
+                        pagingItems = pagingItems,
+                        additionalContent = additionalContent,
+                        itemContent = itemContent
+                    )
                 }
 
                 ROW -> {
-                    LazyRow(
-                        modifier = Modifier.fillMaxWidth().height(300.dp).padding(vertical = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        items(pagingItems.itemCount) { pos ->
-                            pagingItems[pos]?.let {
-                                itemContent(it)
-                            }
-                        }
-                    }
+                    LazyRowTarget(
+                        pagingItems = pagingItems,
+                        itemContent = itemContent
+                    )
                 }
             }
 
